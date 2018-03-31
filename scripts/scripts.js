@@ -18,7 +18,11 @@ function updateButton() {
     toggle.textContent = icon;
 }
 
-function skip() {
+function skip(dataValue=null) {
+    if(dataValue != null){
+        video.currentTime += parseFloat(dataValue);
+        return;
+    }
     video.currentTime += parseFloat(this.dataset.skip);
 }
 
@@ -34,6 +38,19 @@ function handleProgress() {
 function scrub(e) {
     const scrubTime = (e.offsetX / progress.offsetWidth) * video.duration;
     video.currentTime = scrubTime;
+}
+
+function spaceKeyPressed(e) {
+    if(e.keyCode === 32 || e.keyCode === 75){
+        togglePlay();
+    }
+    if(e.keyCode === 74){
+        skip(-10);
+    }
+    if(e.keyCode === 76){
+        skip(25);
+    }
+
 }
 
 /* Hook up event listners */
@@ -55,4 +72,4 @@ progress.addEventListener('mousemove', (e) => mousedown && scrub(e));
 progress.addEventListener('mousedown', () => mousedown = true);
 progress.addEventListener('mouseup', () => mousedown = false);
 
-window.addEventListener('keydown', playSound);
+window.addEventListener('keydown', spaceKeyPressed);
